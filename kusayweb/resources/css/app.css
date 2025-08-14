@@ -1,0 +1,49 @@
+/* TAILWIND v4 - entrada única */
+@import "tailwindcss";
+
+/* Dile a Tailwind dónde buscar clases */
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../**/*.vue";
+
+/* === Tema Kusay (tokens v4) === */
+@theme {
+  /* Paleta primaria (Kusay Blue) */
+  --color-primary-50:  #eef5ff;
+  --color-primary-100: #dbe9ff;
+  --color-primary-200: #b8d2ff;
+  --color-primary-300: #8eb6ff;
+  --color-primary-400: #5e90ff;
+  --color-primary-500: #1c64f2;
+  --color-primary-600: #155eef; /* hover / brand */
+  --color-primary-700: #0b4fd3;
+  --color-primary-800: #0a3fa6;
+  --color-primary-900: #0a2f7a;
+
+  /* Acento (Cyan Tech) */
+  --color-accent-400: #22d3ee;
+  --color-accent-500: #06b6d4;
+  --color-accent-600: #0891b2;
+
+  /* Estados */
+  --color-success-500: #22c55e;
+  --color-warning-500: #eab308;
+  --color-danger-500:  #ef4444;
+
+  /* Tipografía base */
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+               'Open Sans', 'Helvetica Neue', Arial, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Extras globales con utilidades */
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-sans); color: #0f172a; } /* slate-900 */
+  a { @apply text-primary-700 hover:text-primary-800; }
+  :focus-visible { box-shadow: 0 0 0 3px rgba(255,255,255,.9), 0 0 0 5px var(--color-primary-600); outline: none; }
+}
+
+/* (Opcional) helpers pequeños */
+.badge-accent { @apply inline-flex items-center rounded-md bg-primary-50 px-2 py-1 text-xs font-medium text-primary-700; }
