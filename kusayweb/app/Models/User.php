@@ -2,50 +2,47 @@
 
 namespace App\Models;
 
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
-        'name','email','password','phone','role_hint','is_active','last_login_at',
+        'name',
+        'email',
+        'password',
     ];
 
-    protected $hidden = ['password','remember_token'];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'last_login_at'     => 'datetime',
-        'is_active'         => 'boolean',
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
-    // Acceso a Filament: solo Admin y activo
-    public function canAccessPanel(Panel $panel): bool
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        return $this->hasRole('Admin') && ($this->is_active ?? true);
-    }
-
-    // Relación
-    public function leadsAssigned()
-    {
-        return $this->hasMany(Lead::class, 'assigned_to');
-    }
-
-    // Hash automático si envían texto plano
-    public function setPasswordAttribute($value): void
-    {
-        if (!empty($value) && password_get_info($value)['algo'] === 0) {
-            $this->attributes['password'] = bcrypt($value);
-        } else {
-            $this->attributes['password'] = $value;
-        }
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 }
